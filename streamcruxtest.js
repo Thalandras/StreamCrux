@@ -139,6 +139,7 @@ $("#CTA").click(function(event){
 
 
 function loadSuggestions () {
+$( document ).ready ( function (){    
     var suggestionhtml = ""
     for( var i=0; i<suggestionData.length; i++){
         // thumbnail
@@ -162,6 +163,7 @@ function loadSuggestions () {
     console.log( suggestionhtml )
         $("#streamer-container").html( suggestionhtml );
     $("#Streamer-heading").css("display","block");
+})
 }
 
 
