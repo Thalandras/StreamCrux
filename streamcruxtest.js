@@ -123,10 +123,12 @@ $("#CTA").click(function(event){
                 requestData( "get_user", {s0: result[i]["MasterUserID"]}, function( user ) {
                     userData[user["MasterUserID"]] = user;
                     suggestionLoadedCount++;
+                    if( suggestionLoadedCount == suggestionLoadedCountBound ) loadSuggestions();
                 });
                 requestData( "get_stream", {s0: result[i]["MasterStreamID"]}, function( stream ) {
                     streamData[stream["MasterStreamID"]] = stream;
                     suggestionLoadedCount++;
+                    if( suggestionLoadedCount == suggestionLoadedCountBound ) loadSuggestions();
                 });
                 requestData( "get_game", {s0: result[i]["MasterGameID"]}, function( game ) {
                     gameData[game["MasterGameID"]] = game;
@@ -160,12 +162,10 @@ $( document ).ready ( function (){
             window.Webflow && window.Webflow.ready();
             document.dispatchEvent( new Event( 'readystatechange' ) );
         })
-    console.log( suggestionhtml )
         $("#streamer-container").html( suggestionhtml );
     $("#Streamer-heading").css("display","block");
 })
 }
-
 
 function requestData( cmd, params, callback )
 {
