@@ -20,6 +20,7 @@ $( "#Logo").css("cursor","pointer").click(function() {
     location.reload()
 });
 
+
 //Hide Streamers and CTA -  and disable clicks on type and popularity
 $( document ).ready( function() {
     $("#CTA").css("display","none")
@@ -70,6 +71,9 @@ $( document ).ready( function() {
             })
             $(".game-dropdown").css("pointer-events","none");
             $("#type-heading").removeClass("not-active");
+            $('html,body').animate({
+                scrollTop: $("#type-section").offset().top},
+                'slow');
         })        
     })
 });
@@ -79,7 +83,7 @@ $( document ).ready( function() {
 $(".type").click (function( event ){
     event.preventDefault();
     state["type"] = $( this ).attr( "id" );
-    $(".type").addClass("non-active").css({"color":"#fff","pointer-events":"none"});
+    $(".type").addClass("non-active").css({ "color" : "#fff" , "pointer-events" : "none" });
     $( "#" + state["type"]).removeClass("non-active");
     $( this ).css({"color":"#f1b91e"});
     //Activates Step 3 - but only for streamers with active streams
@@ -91,6 +95,9 @@ $(".type").click (function( event ){
         }
     })
     $("#popularity-heading").removeClass("not-active");
+    $('html,body').animate({
+        scrollTop: $("#popularity-section").offset().top},
+        'slow');
 })
 
 //Step 3
@@ -98,12 +105,16 @@ $(".type").click (function( event ){
 $(".popularity").click (function( event ){
     event.preventDefault();
     state["popularity"] = $( this ).attr( "id" );
-    $(".popularity").addClass("non-active").css({"color":"#fff","pointer-events:":"none"});
+    $(".popularity").addClass("non-active").css({ "color" : "#fff" , "cursor" : "default" , "pointer-events" : "none"});
     $( "#" + state["popularity"]).removeClass("non-active");
     $( this ).css({"color":"#f1b91e"});
     if(state["game"] != "-1" && state["type"] != "" && state["popularity"] != "") {
-        $("#CTA").css("display","block") 
+        $("#CTA").css("display","block")
+         
     }
+    $('html,body').animate({
+        scrollTop: $("#popularity-section").offset().top},
+        'slow');
 })
 
 
@@ -157,20 +168,67 @@ $( document ).ready ( function (){
         + "<div class=\"discription-text\">" + userData[suggestionData[i]["MasterUserID"]]["description"] + "</div>"
         + "<a href=" + url + " class=\"watch-on-twitch-button w-button\">Watch on Twitch</a></div>"
         }
+        $("#streamer-container").html( suggestionhtml );
+        $("#Streamer-heading").css("display","block");
         $( document ).ajaxComplete( function() {
             window.Webflow && window.Webflow.destroy();
             window.Webflow && window.Webflow.ready();
             document.dispatchEvent( new Event( 'readystatechange' ) );
         })
-        $("#streamer-container").html( suggestionhtml );
-    $("#Streamer-heading").css("display","block");
+        //Create cookie that remembers the URL of the streamer clicked
+    $ (".watch-on-twitch-button").click(function(){
+    var rememberStreamer = $( this ).attr("href");
+    createCookie("Streamer",rememberStreamer,7);
+    alert("Cookie created")
 })
+})
+}
+
+$("#cookie-create").click (function() {
+    setCookie("Streamer" , "Something" , 7);
+    alert("Cookie created");
+})
+
+$("#cookie-check").click (function() {
+    var streamerURL = getCookie("Streamer");
+    alert(streamerURL)
+})
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function listCookies() {
+    var theCookies = document.cookie.split(';');
+    var aString = '';
+    for (var i = 1 ; i <= theCookies.length; i++) {
+        aString += i + ' ' + theCookies[i-1] + "\n";
+    }
+    return aString;
 }
 
 function requestData( cmd, params, callback )
 {
     let data = { 
-        password: "5Errarehumanumest!",
+        password: 5+ropeDat+"!",
         command: cmd,
         ...params
     };
